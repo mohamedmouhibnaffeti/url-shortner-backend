@@ -1,10 +1,16 @@
 import { Request, Response } from 'express';
-import { GenerateRandomID } from '../helpers/Strings.js';
+import { checkIsURL, GenerateRandomID } from '../helpers/Strings.js';
 import { Url } from '../models/UrlsSchema.js';
 
 const ShortenUrl = async(req: Request, res: Response): Promise<any> => {
     try{
         const { originalUrl } = req.body
+        if(!originalUrl){
+            return res.status(400).json({message: "Please provide a url"})
+        }
+        if(!checkIsURL(originalUrl)){
+            return res.status(400).json({message: "Please provide a valid url"})
+        }
         const id = GenerateRandomID(6)
 
         const newUrl = new Url({originalUrl: originalUrl, shortCode: id})
