@@ -1,0 +1,7 @@
+{
+    "exec": "tsx",
+    "ext": "ts,tsx",
+    "ignore": ["node_modules", "dist"],
+    "verbose": true
+  }
+  
