@@ -9,7 +9,7 @@ dotenv.config()
 
 const app = express()
 
-app.use(cors());
+app.use(cors())
 
 app.use(express.json())
 
@@ -17,14 +17,14 @@ app.use("/api", urlShorter)
 
 const PORT = process.env.PORT
 export const startServer = async () => {
-    await connectDB();
+    await connectDB()
     return app.listen(PORT, () => {
-        console.log(`Server is running on port ${PORT}`);
-    });
-};
+        console.log(`Server is running on port ${PORT}`)
+    })
+}
 
 if (require.main === module) {
-    startServer();
+    startServer()
 }
 
 export default app

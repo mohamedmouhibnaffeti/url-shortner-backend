@@ -1,30 +1,27 @@
 import request from 'supertest';
 import app from '../../server.js';
 import { Url } from '../../models/UrlsSchema.js';
-import { GenerateRandomID, checkIsURL } from "../../helpers/Strings.js"; // Import checkIsURL
+import { GenerateRandomID, checkIsURL } from "../../helpers/Strings.js";
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 
 dotenv.config();
 
-// Mock the database and helper functions
 jest.mock('../../models/UrlsSchema.js');
 jest.mock('../../helpers/Strings.js');
 
 describe('API Endpoints', () => {
     beforeAll(async () => {
-        // Connect to the database before running tests
         await mongoose.connect(process.env.DB_URL);
     });
 
     afterAll(async () => {
-        // Close the database connection after all tests are done
         await mongoose.connection.close();
     });
 
     beforeEach(() => {
         jest.clearAllMocks();
-        process.env.BASE_URL = 'http://localhost:3001'; // Set BASE_URL explicitly
+        process.env.BASE_URL = 'http://localhost:3001';
     });
 
     describe('POST /api/shorten', () => {
@@ -35,16 +32,16 @@ describe('API Endpoints', () => {
         });
 
         it('should return 400 if an invalid URL is provided', async () => {
-            (checkIsURL as jest.Mock).mockReturnValue(false); // Mock checkIsURL to return false
+            (checkIsURL as jest.Mock).mockReturnValue(false);
             const response = await request(app).post('/api/shorten').send({ originalUrl: 'invalid-url' });
             expect(response.status).toBe(400);
             expect(response.body).toEqual({ message: 'Please provide a valid url' });
         });
 
         it('should create a short URL and return 201', async () => {
-            const mockShortCode = 'abc123';  // Fixed short code for testing
-            (checkIsURL as jest.Mock).mockReturnValue(true); // Mock checkIsURL to return true
-            (GenerateRandomID as jest.Mock).mockReturnValue(mockShortCode); // Mock GenerateRandomID
+            const mockShortCode = 'abc123';
+            (checkIsURL as jest.Mock).mockReturnValue(true);
+            (GenerateRandomID as jest.Mock).mockReturnValue(mockShortCode);
             (Url.prototype.save as jest.Mock).mockResolvedValue({ shortCode: mockShortCode });
 
             const response = await request(app)
@@ -56,7 +53,7 @@ describe('API Endpoints', () => {
         });
 
         it('should handle errors and return 500', async () => {
-            (checkIsURL as jest.Mock).mockReturnValue(true); // Mock checkIsURL to return true
+            (checkIsURL as jest.Mock).mockReturnValue(true);
             (Url.prototype.save as jest.Mock).mockRejectedValue(new Error('Database error'));
 
             const response = await request(app)
