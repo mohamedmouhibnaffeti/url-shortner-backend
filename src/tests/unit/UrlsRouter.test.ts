@@ -3,8 +3,7 @@ import express from 'express'
 import mongoose from 'mongoose'
 import dotenv from 'dotenv'
 import cors from 'cors'
-import urlShorter from '../routes/UrlsRouter.js'
-
+import urlShorter from '../../routes/UrlsRouter.js'
 dotenv.config()
 
 const app = express()
@@ -14,7 +13,7 @@ app.use(express.json())
 app.use('/api', urlShorter)
 
 beforeAll(async () => {
-    const url = 'mongodb://127.0.0.1:27017/urlshortener-test'
+    const url = process.env.DB_URL
     await mongoose.connect(url)
 })
 
@@ -65,7 +64,6 @@ describe('GET /api/:shortCode', () => {
 
     it('should redirect to the original URL for a valid shortCode', async () => {
         const shortCode = shortUrl.split('/').pop()
-        console.log("Testing GET /api/:shortCode with:", `/api/${shortCode}`)
         
         const response = await request(app).get(`/api/${shortCode}`)
         
