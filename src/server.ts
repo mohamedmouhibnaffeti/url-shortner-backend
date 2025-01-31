@@ -23,8 +23,4 @@ export const startServer = async () => {
     })
 }
 
-if (require.main === module) {
-    startServer()
-}
-
 export default app
