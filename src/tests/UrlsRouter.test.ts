@@ -53,7 +53,7 @@ describe('POST /api/shorten', () => {
 })
 
 describe('GET /api/:shortCode', () => {
-    let shortUrl: string;
+    let shortUrl: string
 
     beforeAll(async () => {
         const newUrl = await request(app)
@@ -64,9 +64,12 @@ describe('GET /api/:shortCode', () => {
     })
 
     it('should redirect to the original URL for a valid shortCode', async () => {
-        const response = await request(app).get(shortUrl.replace(`${process.env.BASE_URL}/api/`, ''))
-
-        expect(response.status).toBe(302) // Expecting a redirect
+        const shortCode = shortUrl.split('/').pop()
+        console.log("Testing GET /api/:shortCode with:", `/api/${shortCode}`)
+        
+        const response = await request(app).get(`/api/${shortCode}`)
+        
+        expect(response.status).toBe(302)
         expect(response.headers.location).toBe('https://www.test.com')
     })
 
