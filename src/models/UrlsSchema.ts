@@ -8,6 +8,14 @@ const UrlsSchema = new Schema({
     shortCode: {
         type: String,
         required: true
+    },
+    qrCode: {
+        type: String,
+        required: true
+    },
+    ContentType: {
+        type: String,
+        required: true
     }
 })
 
