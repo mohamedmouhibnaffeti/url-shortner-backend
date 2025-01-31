@@ -15,7 +15,7 @@ app.use(express.json())
 
 app.use("/api", urlShorter)
 
-const PORT = process.env.PORT
+const PORT = process.env.PORT || 4000
 export const startServer = async () => {
     await connectDB()
     return app.listen(PORT, () => {
