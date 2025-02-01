@@ -3,20 +3,20 @@ import app from '../../server.js';
 import { Url } from '../../models/UrlsSchema.js';
 import { GenerateRandomID, checkIsURL } from "../../helpers/Strings.js";
 import dotenv from 'dotenv';
-import mongoose from 'mongoose';
+import { closeDB, connectDB } from '../../db.js';
 
 dotenv.config();
 
-jest.mock('../../models/UrlsSchema.js');
-jest.mock('../../helpers/Strings.js');
+jest.mock('../../models/UrlsSchema.ts');
+jest.mock('../../helpers/Strings.ts');
 
 describe('API Endpoints', () => {
     beforeAll(async () => {
-        await mongoose.connect(process.env.DB_URL);
+        await connectDB()
     });
 
     afterAll(async () => {
-        await mongoose.connection.close();
+        await closeDB()
     });
 
     beforeEach(() => {

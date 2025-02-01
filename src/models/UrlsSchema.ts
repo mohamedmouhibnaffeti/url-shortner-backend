@@ -12,10 +12,6 @@ const UrlsSchema = new Schema({
     qrCode: {
         type: String,
         required: true
-    },
-    ContentType: {
-        type: String,
-        required: true
     }
 })
 

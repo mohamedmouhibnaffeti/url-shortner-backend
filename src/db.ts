@@ -8,3 +8,8 @@ export const connectDB = async () => {
         console.log(err)
     }
 }
+
+export const closeDB = async () => {
+    await mongoose.connection.close()
+    console.log("Database connection closed")
+}
